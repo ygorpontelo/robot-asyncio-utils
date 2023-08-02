@@ -14,7 +14,13 @@ from robot.utils.robottime import timestr_to_secs, secs_to_timestr
 from robot.errors import DataError, ExecutionPassed, ExecutionFailed, ExecutionFailures
 
 
-class AsyncioUtils(BuiltIn):
+class AsyncioUtils:
+
+    def __init__(self) -> None:
+        try:
+            self.builtIn = BuiltIn()
+        except:
+            self.builtIn = None
 
     async def async_gather_keywords(self, *keywords):
         """Executes all the given keywords concurrently.
@@ -49,7 +55,7 @@ class AsyncioUtils(BuiltIn):
         """
 
         return await self._async_gather_keywords(
-            self._split_run_keywords(list(keywords))
+            self.builtIn._split_run_keywords(list(keywords))
         )
 
     async def _async_gather_keywords(self, iterable):
@@ -58,7 +64,7 @@ class AsyncioUtils(BuiltIn):
         try:
             for kw, args in iterable:
                 try:
-                    task = self.run_keyword(kw, *args)
+                    task = self.builtIn.run_keyword(kw, *args)
                     if not inspect.iscoroutine(task):
                         raise DataError(f"Keyword '{kw}' is not async")
                     tasks.append(task)
@@ -67,7 +73,7 @@ class AsyncioUtils(BuiltIn):
                     raise err
                 except ExecutionFailed as err:
                     errors.extend(err.get_errors())
-                    if not err.can_continue(self._context):
+                    if not err.can_continue(self.builtIn._context):
                         break
             if errors:
                 raise ExecutionFailures(errors)
@@ -103,9 +109,9 @@ class AsyncioUtils(BuiltIn):
         if seconds < 0:
             seconds = 0
         await self._async_sleep_in_parts(seconds)
-        self.log("Slept %s" % secs_to_timestr(seconds))
+        self.builtIn.log("Slept %s" % secs_to_timestr(seconds))
         if reason:
-            self.log(reason)
+            self.builtIn.log(reason)
 
     async def _async_sleep_in_parts(self, seconds):
         """
@@ -132,7 +138,7 @@ class AsyncioUtils(BuiltIn):
         another keyword or from the command line.
         """
 
-        task = self.run_keyword(name, *args)
+        task = self.builtIn.run_keyword(name, *args)
         if not inspect.iscoroutine(task):
             raise DataError(f"Keyword '{name}' is not async")
         return asyncio.create_task(task)
@@ -144,6 +150,6 @@ class AsyncioUtils(BuiltIn):
         If obj is not a task, DataError will be raised.
         """
 
-        if not inspect.iscoroutine(task):
+        if not inspect.isawaitable(task):
             raise DataError("Obj is not an async Task")
         return await task
