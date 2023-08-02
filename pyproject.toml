@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "robotframework-asyncio-utils"
+version = "0.1.0"
+description = ""
+authors = ["Ygor Pontelo <ygorpontelo@gmail.com>"]
+license = "LICENSE"
+readme = "README.md"
+packages = [{include = "asyncio_utils"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+robotframework = "^6.1.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.282"
+ipdb = "^0.13.13"
+black = "^23.7.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
