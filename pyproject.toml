@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "robotframework-asyncio-utils"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Ygor Pontelo <ygorpontelo@gmail.com>"]
-license = "LICENSE"
+license = "MIT"
 readme = "README.md"
 packages = [{include = "asyncio_utils"}]
 
