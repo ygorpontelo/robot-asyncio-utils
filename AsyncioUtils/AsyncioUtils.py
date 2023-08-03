@@ -19,7 +19,7 @@ class AsyncioUtils:
     def __init__(self) -> None:
         try:
             self.builtIn = BuiltIn()
-        except:
+        except Exception:
             self.builtIn = None
 
     async def async_gather_keywords(self, *keywords):
