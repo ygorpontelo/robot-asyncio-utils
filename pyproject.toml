@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "robotframework-asyncio-utils"
-version = "0.1.6"
+version = "0.1.7"
 description = ""
 authors = ["Ygor Pontelo <ygorpontelo@gmail.com>"]
 license = "MIT"
@@ -10,7 +10,7 @@ packages = [{include = "AsyncioUtils"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-robotframework = "^6.1.0"
+robotframework = ">=6.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
