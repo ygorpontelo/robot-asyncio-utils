@@ -4,7 +4,7 @@ This library contains utility functions to use asyncio features from robot easie
 
 ## Requirements
 
-To use this library you need python >=3.8 and Robot Framework >=6.1.0
+To use this library you need python >=3.8 and Robot Framework >=6.1.1
 
 ## Installation
 
