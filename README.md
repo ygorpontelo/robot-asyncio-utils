@@ -20,6 +20,8 @@ Once you installed, just put "Library    AsyncioUtils" in the settings section o
 - Async Sleep
 - Async Create Task
 - Async Await Task
+- Async Cancel Task
+- Async Is Task
 
 Each keyword has a doc string too.
 

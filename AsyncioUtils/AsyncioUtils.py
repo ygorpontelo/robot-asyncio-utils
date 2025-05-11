@@ -4,7 +4,6 @@ Utility functions to help using asyncio features.
 Some implementations used part of functions from the BuiltIn module from robot itself.
 """
 
-
 import time
 import inspect
 import asyncio
@@ -15,7 +14,6 @@ from robot.errors import DataError, ExecutionPassed, ExecutionFailed, ExecutionF
 
 
 class AsyncioUtils:
-
     def __init__(self) -> None:
         try:
             self.builtIn = BuiltIn()
@@ -53,12 +51,13 @@ class AsyncioUtils:
         string as argument, you can either use variables or escape it with
         a backslash like ``\\AND``.
         """
-
+        assert self.builtIn
         return await self._async_gather_keywords(
             self.builtIn._split_run_keywords(list(keywords))
         )
 
     async def _async_gather_keywords(self, iterable):
+        assert self.builtIn
         tasks = []
         errors = []
         try:
@@ -103,7 +102,7 @@ class AsyncioUtils:
         | Sleep | 2 minutes 10 seconds |
         | Sleep | 10s                  | Wait for a reply |
         """
-
+        assert self.builtIn
         seconds = timestr_to_secs(time_)
         # Python hangs with negative values
         if seconds < 0:
@@ -119,7 +118,6 @@ class AsyncioUtils:
         to ensure that we can signal stop (with timeout)
         split sleeping to small pieces
         """
-
         endtime = time.time() + float(seconds)
         while True:
             remaining = endtime - time.time()
@@ -137,19 +135,34 @@ class AsyncioUtils:
         can be a variable and thus set dynamically, e.g. from a return value of
         another keyword or from the command line.
         """
-
+        assert self.builtIn
         task = self.builtIn.run_keyword(name, *args)
         if not inspect.iscoroutine(task):
             raise DataError(f"Keyword '{name}' is not async")
         return asyncio.create_task(task)
 
-    async def async_await_task(self, task):
+    async def async_await_task(self, task: asyncio.Task):
         """
         Get the result from a scheduled async task.
 
         If obj is not a task, DataError will be raised.
         """
-
         if not inspect.isawaitable(task):
             raise DataError("Obj is not an async Task")
         return await task
+
+    async def async_cancel_task(self, task: asyncio.Task) -> bool:
+        """
+        Attempt to cancel the task, return True if succeeded, False otherwise
+
+        If obj is not a task, DataError will be raised.
+        """
+        if not inspect.isawaitable(task):
+            raise DataError("Obj is not an async Task")
+        return task.cancel()
+
+    def async_is_task(self, obj) -> bool:
+        """
+        Return True if obj is coroutine, False otherwise
+        """
+        return asyncio.iscoroutine(obj)

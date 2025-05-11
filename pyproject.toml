@@ -1,23 +1,30 @@
-[tool.poetry]
+[project]
 name = "robotframework-asyncio-utils"
-version = "0.1.8"
-description = ""
-authors = ["Ygor Pontelo <ygorpontelo@gmail.com>"]
+version = "0.2.0"
+description = "Some keywords to help with async programming in robot framework"
+authors = [ {name = "Ygor Pontelo", "email" = "ygorpontelo@gmail.com"} ]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/ygorpontelo/robot-asyncio-utils"
-packages = [{include = "AsyncioUtils"}]
+requires-python = ">=3.8"
+dependencies = [
+    "robotframework>=6.1.1",
+]
+classifiers = [
+    "Framework :: Robot Framework",
+]
+keywords = ["async", "utils"]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-robotframework = ">=6.1.1"
+[project.urls]
+Homepage = "https://github.com/ygorpontelo/robot-asyncio-utils"
 
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.0.282"
-ipdb = "^0.13.13"
-black = "^23.7.0"
+[dependency-groups]
+dev = [
+    "ruff>=0.11.9",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["AsyncioUtils"]
